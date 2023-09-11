@@ -1,0 +1,5 @@
+# TAE_2023_24
+
+Asignatura TECNICAS AVANZADAS de ESTADISTICA impartida en el GRADO en INGENIERIA en ORGANIZACION (ETSI Industriales - UPM)
+
+Curso 2023-24
