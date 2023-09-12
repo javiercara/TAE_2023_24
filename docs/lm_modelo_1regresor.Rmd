@@ -145,7 +145,7 @@ $$
 RSS(\beta) = y^T y - y^T X \beta - \beta^T X^T y + \beta^T X^T X \beta
 $$
 
-Para calcular el mínimo se deriva respecto a $\beta$ y se iguala a cero (ver [Apendice](apendice_derivadas.html))
+Para calcular el mínimo se deriva respecto a $\beta$ y se iguala a cero (ver [Apendice](lm_apendice_derivadas.html))
 
 $$
 \frac{d RSS(\beta)}{d \beta} = - X^T y - X^T y + (X^T X + X^T X) \beta = 0

@@ -126,7 +126,22 @@ $$
 e = y - \hat y = (I-H)y
 $$
 
-Se suele utilizar para derivar resultados teóricos. Por ejemplo, utilizando esta matriz se puede demostrar que $\sum e_i^2 = y^T y - \beta^T (X^T y)$.
+Se suele utilizar para derivar resultados teóricos. Por ejemplo, utilizando esta matriz se puede demostrar la siguiente propiedad para la suma de los residuos al cuadrado:
+
+$$
+\sum e_i^2 = e^T e = (y-Hy)^T (y-Hy) = y^Ty - y^THy - y^TH^Ty + y^TH^THy = y^Ty - y^TH^Ty
+$$
+
+$$
+= y^Ty - (Hy)^Ty = y^Ty - (X\beta)^Ty = y^Ty - \beta^T(X^Ty)
+$$
+
+Finalmente
+
+$$
+\sum e_i^2 = y^T y - \beta^T (X^T y)
+$$
+
 
 ## Ortogonalidad de residuos y regresores
 
@@ -237,7 +252,46 @@ donde $\beta_a$ es el vector de coeficientes del modelo excepto $\beta_0$.
 
 ## Estimación del modelo utilizando matrices de covarianzas
 
-Se puede demostrar que $X_a^T e = 0$, por lo que
+Se puede demostrar que $X_a^T e = 0$:
+
+$$
+X_a^T e = 
+\begin{bmatrix}
+x_{11} - \bar x_{1} & x_{21} - \bar x_{2} & \cdots  & x_{k1} - \bar x_{k} \\
+x_{12} - \bar x_{1} & x_{22} - \bar x_{2} & \cdots  & x_{k2} - \bar x_{k} \\
+\cdots &\cdots & \cdots & \cdots \\
+x_{1n} - \bar x_{1} & x_{2n} - \bar x_{2} & \cdots  & x_{kn} - \bar x_{k} \\
+\end{bmatrix}^T
+\begin{bmatrix}
+e_1 \\ e_2 \\ \cdots \\ e_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum(x_{1i}-\bar{x}_1)e_i \\
+\sum(x_{2i}-\bar{x}_2)e_i \\
+\cdots \\ 
+\sum(x_{ki}-\bar{x}_k)e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum x_{1i}e_i - \bar{x}_1\sum e_i \\
+\sum x_{2i}e_i - \bar{x}_2\sum e_i \\
+\cdots \\ 
+\sum x_{ki}e_i - \bar{x}_k\sum e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0 \\ \cdots \\ 0
+\end{bmatrix}
+$$
+
+Por tanto, partiendo de la ecuación en diferencias a la media:
+
+$$
+y_a = X_a \beta_a + e
+$$
+
+y multiplicando ambos miembros por $X_a^T$:
 
 $$
 X_a^T y_a = X_a^T X_a \beta_a + X_a^T e \Rightarrow S_{Xy} = S_{XX} \beta_a
@@ -271,7 +325,7 @@ S_{1k} & S_{2k} & \cdots  & S_{kk} \\
 \end{bmatrix}
 $$
 
-donde $S_{ij}$ representa la covarianza entre $x_i$ e $x_j$, y $S_{iy}$ representa la covarianza entre $x_i$ e $y$.
+donde $S_{ij}$ representa la covarianza entre $x_i$ e $x_j$, y $S_{iy}$ representa la covarianza entre $x_i$ e $y$ (ver [Apendice](lm_apendice_covarianzas.html)).
 
 Las ecuaciones derivadas en este apartado constituyen una alternativa para la estimación de los coeficientes del modelo de regresión lineal.
 
@@ -280,6 +334,31 @@ A modo de resumen:
 - Las matrices $X$ e $y$ son matrices de **datos**. Con ellas se pueden estimar los parámetros del modelo haciendo $\beta = (X^TX)^{-1}X^Ty$.
 
 - Las matrices $S_{Xy}$ y $S_{XX}$ son matrices de **covarianzas**. Con ellas se pueden estimar los parámetros del modelo haciendo $\beta_a = S_{XX}^{-1} S_{Xy}$.
+
+## Residuos 
+
+Los residuos en este modelo se definen como
+
+$$
+e = y_a - X_a\beta_a
+$$
+
+Se ha demostrado que $X_a^T e = 0$. Por último vamos a demostrar otra propiedad análoga a la obtenida con el modelo con matrices de datos:
+
+$$
+\sum e_i^2 = e^T e = (y_a - X_a\beta_a)^T(y_a - X_a\beta_a) = y_a^T y_a - y_a^T X_a \beta_a - \beta_a^T X_a^T y_a - \beta_a^T X_a^T X_a \beta_a
+$$
+
+$$
+= (n-1)s_y^2 - (n-1)S_{Xy}^T \beta_a - (n-1)\beta_a^T S_{Xy} + (n-1)(S_{XX}^{-1}S_{Xy})^T S_{XX} \beta_a
+$$
+
+Finalmente:
+
+$$
+\sum e_i^2 = (n-1)s_y^2 - (n-1)\beta_a^T S_{Xy}
+$$
+
 
 ## Aplicación a los datos
 
@@ -293,7 +372,7 @@ d = read.csv("datos/kidiq.csv")
 # en primer lugar vamos a calcular las matrices de covarianzas con la función de R cov()
 (S = cov(d))
 (Sxx = S[c(3,5),c(3,5)])
-(Sxy = S[c(3,5),1])
+(Sxy = S[c(3,5),1] )
 ```
 
 ```{r}
@@ -324,12 +403,14 @@ $$
 ( beta0 = mean(d$kid_score) - colMeans(Xa) %*% beta_a )
 ```
 
-# Ejercicios propuestos
+Por último, para la suma de los residuos al cuadrado:
 
-1. Demostrar que la matriz H es simétrica e idempotente.
+```{r}
+# varianza de y
+(sy2 = S[1,1] )
 
-2. Utilizando la matriz H demostrar que $\sum e_i^2 = y^T y - \beta^T (X^T y)$.
+(RSS = (n-1)*sy2 - (n-1)*t(beta_a) %*% Sxy)
+```
 
-3. Demostrar que $X_a^T e = 0$.
+# Bondad del modelo ajustado
 
-4. Demostrar que $\sum e_i^2 = (n-1)s_y^2 - (n-1) \beta_a^T S_{Xy}$.

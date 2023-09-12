@@ -1594,7 +1594,19 @@ idempotente (<span class="math inline">\(H \cdot H = H\)</span>).</p>
 e = y - \hat y = (I-H)y
 \]</span></p>
 <p>Se suele utilizar para derivar resultados teóricos. Por ejemplo,
-utilizando esta matriz se puede demostrar que <span class="math inline">\(\sum e_i^2 = y^T y - \beta^T (X^T y)\)</span>.</p>
+utilizando esta matriz se puede demostrar la siguiente propiedad para la
+suma de los residuos al cuadrado:</p>
+<p><span class="math display">\[
+\sum e_i^2 = e^T e = (y-Hy)^T (y-Hy) = y^Ty - y^THy - y^TH^Ty + y^TH^THy
+= y^Ty - y^TH^Ty
+\]</span></p>
+<p><span class="math display">\[
+= y^Ty - (Hy)^Ty = y^Ty - (X\beta)^Ty = y^Ty - \beta^T(X^Ty)
+\]</span></p>
+<p>Finalmente</p>
+<p><span class="math display">\[
+\sum e_i^2 = y^T y - \beta^T (X^T y)
+\]</span></p>
 </div>
 <div id="ortogonalidad-de-residuos-y-regresores" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Ortogonalidad de
@@ -1708,7 +1720,45 @@ coeficientes del modelo excepto <span class="math inline">\(\beta_0\)</span>.</p
 <h2><span class="header-section-number">3.2</span> Estimación del modelo
 utilizando matrices de covarianzas</h2>
 <p>Se puede demostrar que <span class="math inline">\(X_a^T e =
-0\)</span>, por lo que</p>
+0\)</span>:</p>
+<p><span class="math display">\[
+X_a^T e =
+\begin{bmatrix}
+x_{11} - \bar x_{1} &amp; x_{21} - \bar x_{2} &amp; \cdots  &amp; x_{k1}
+- \bar x_{k} \\
+x_{12} - \bar x_{1} &amp; x_{22} - \bar x_{2} &amp; \cdots  &amp; x_{k2}
+- \bar x_{k} \\
+\cdots &amp;\cdots &amp; \cdots &amp; \cdots \\
+x_{1n} - \bar x_{1} &amp; x_{2n} - \bar x_{2} &amp; \cdots  &amp; x_{kn}
+- \bar x_{k} \\
+\end{bmatrix}^T
+\begin{bmatrix}
+e_1 \\ e_2 \\ \cdots \\ e_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum(x_{1i}-\bar{x}_1)e_i \\
+\sum(x_{2i}-\bar{x}_2)e_i \\
+\cdots \\
+\sum(x_{ki}-\bar{x}_k)e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+\sum x_{1i}e_i - \bar{x}_1\sum e_i \\
+\sum x_{2i}e_i - \bar{x}_2\sum e_i \\
+\cdots \\
+\sum x_{ki}e_i - \bar{x}_k\sum e_i
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0 \\ \cdots \\ 0
+\end{bmatrix}
+\]</span></p>
+<p>Por tanto, partiendo de la ecuación en diferencias a la media:</p>
+<p><span class="math display">\[
+y_a = X_a \beta_a + e
+\]</span></p>
+<p>y multiplicando ambos miembros por <span class="math inline">\(X_a^T\)</span>:</p>
 <p><span class="math display">\[
 X_a^T y_a = X_a^T X_a \beta_a + X_a^T e \Rightarrow S_{Xy} = S_{XX}
 \beta_a
@@ -1741,7 +1791,7 @@ S_{1k} &amp; S_{2k} &amp; \cdots  &amp; S_{kk} \\
 \]</span></p>
 <p>donde <span class="math inline">\(S_{ij}\)</span> representa la
 covarianza entre <span class="math inline">\(x_i\)</span> e <span class="math inline">\(x_j\)</span>, y <span class="math inline">\(S_{iy}\)</span> representa la covarianza entre
-<span class="math inline">\(x_i\)</span> e <span class="math inline">\(y\)</span>.</p>
+<span class="math inline">\(x_i\)</span> e <span class="math inline">\(y\)</span> (ver <a href="lm_apendice_covarianzas.html">Apendice</a>).</p>
 <p>Las ecuaciones derivadas en este apartado constituyen una alternativa
 para la estimación de los coeficientes del modelo de regresión
 lineal.</p>
@@ -1755,8 +1805,30 @@ del modelo haciendo <span class="math inline">\(\beta_a = S_{XX}^{-1}
 S_{Xy}\)</span>.</p></li>
 </ul>
 </div>
-<div id="aplicación-a-los-datos" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Aplicación a los
+<div id="residuos-1" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Residuos</h2>
+<p>Los residuos en este modelo se definen como</p>
+<p><span class="math display">\[
+e = y_a - X_a\beta_a
+\]</span></p>
+<p>Se ha demostrado que <span class="math inline">\(X_a^T e =
+0\)</span>. Por último vamos a demostrar otra propiedad análoga a la
+obtenida con el modelo con matrices de datos:</p>
+<p><span class="math display">\[
+\sum e_i^2 = e^T e = (y_a - X_a\beta_a)^T(y_a - X_a\beta_a) = y_a^T y_a
+- y_a^T X_a \beta_a - \beta_a^T X_a^T y_a - \beta_a^T X_a^T X_a \beta_a
+\]</span></p>
+<p><span class="math display">\[
+= (n-1)s_y^2 - (n-1)S_{Xy}^T \beta_a - (n-1)\beta_a^T S_{Xy} +
+(n-1)(S_{XX}^{-1}S_{Xy})^T S_{XX} \beta_a
+\]</span></p>
+<p>Finalmente:</p>
+<p><span class="math display">\[
+\sum e_i^2 = (n-1)s_y^2 - (n-1)\beta_a^T S_{Xy}
+\]</span></p>
+</div>
+<div id="aplicación-a-los-datos" class="section level2" number="3.4">
+<h2><span class="header-section-number">3.4</span> Aplicación a los
 datos</h2>
 <p>Para comprobar su funcionamiento, vamos a aplicarlo al caso de dos
 regresores:</p>
@@ -1773,7 +1845,7 @@ regresores:</p>
 <pre><code>##            mom_iq  mom_age
 ## mom_iq  225.00000 3.711610
 ## mom_age   3.71161 7.295777</code></pre>
-<pre class="r"><code>(Sxy = S[c(3,5),1])</code></pre>
+<pre class="r"><code>(Sxy = S[c(3,5),1] )</code></pre>
 <pre><code>##     mom_iq    mom_age 
 ## 137.244279   5.071923</code></pre>
 <pre class="r"><code>(beta_a = solve(Sxx) %*% Sxy)</code></pre>
@@ -1802,20 +1874,18 @@ Utilizamos la fórmula</p>
 <pre class="r"><code>( beta0 = mean(d$kid_score) - colMeans(Xa) %*% beta_a )</code></pre>
 <pre><code>##          [,1]
 ## [1,] 86.79724</code></pre>
+<p>Por último, para la suma de los residuos al cuadrado:</p>
+<pre class="r"><code># varianza de y
+(sy2 = S[1,1] )</code></pre>
+<pre><code>## [1] 416.5962</code></pre>
+<pre class="r"><code>(RSS = (n-1)*sy2 - (n-1)*t(beta_a) %*% Sxy)</code></pre>
+<pre><code>##          [,1]
+## [1,] 143665.4</code></pre>
 </div>
 </div>
-<div id="ejercicios-propuestos" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Ejercicios
-propuestos</h1>
-<ol style="list-style-type: decimal">
-<li><p>Demostrar que la matriz H es simétrica e idempotente.</p></li>
-<li><p>Utilizando la matriz H demostrar que <span class="math inline">\(\sum e_i^2 = y^T y - \beta^T (X^T
-y)\)</span>.</p></li>
-<li><p>Demostrar que <span class="math inline">\(X_a^T e =
-0\)</span>.</p></li>
-<li><p>Demostrar que <span class="math inline">\(\sum e_i^2 = (n-1)s_y^2
-- (n-1) \beta_a^T S_{Xy}\)</span>.</p></li>
-</ol>
+<div id="bondad-del-modelo-ajustado" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Bondad del modelo
+ajustado</h1>
 </div>
 
 
