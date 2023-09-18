@@ -63,7 +63,7 @@ output:
 2. Inferencia en el modelo de regresión logística
     a. [Estimadores y su distribución. Inferencia](logit_inferencia.html) [(pdf)](logit_inferencia.pdf)
     b. [Bootstrap](logit_inferencia_bootstrap.html) [(pdf)](logit_inferencia_bootstrap.pdf)
-3. Aplicaciones del modelo de regresión lineal
+3. Aplicaciones del modelo de regresión logística
     a. [Cálculo de predicciones](logit_aplicaciones_prediccion.html) [(pdf)](logit_aplicaciones_prediccion.pdf)
     b. [Análisis de las relaciones entre variables](logit_aplicaciones_explicacion.html) [(pdf)](logit_aplicaciones_explicacion.pdf)
 4. Bondad de ajuste
@@ -80,7 +80,7 @@ output:
     a. [Modelo](poisson_modelo.html) [(pdf)](poisson_modelo.pdf)
 2. Inferencia en el modelo de regresión logística
     a. [Estimadores y su distribución. Inferencia](poisson_inferencia.html) [(pdf)](poisson_inferencia.pdf)
-3. Aplicaciones del modelo de regresión lineal
+3. Aplicaciones del modelo de regresión de Poisson
     a. [Cálculo de predicciones](poisson_aplicaciones_prediccion.html) [(pdf)](poisson_aplicaciones_prediccion.pdf)
 4. Bondad de ajuste
     a. [Bondad del ajuste](poisson_bondadajuste.html) [(pdf)](poisson_bondadajuste.pdf) 

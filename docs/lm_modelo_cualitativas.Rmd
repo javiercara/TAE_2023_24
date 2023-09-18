@@ -61,7 +61,7 @@ $$
 \sum_{i=1}^{n_0} kid\_score_i = \sum_{i=1}^{n_0} \beta_0 + \sum_{i=1}^{n_0} e_i = n_0 \beta_0 \Rightarrow \beta_0 = \frac{\sum_{i=1}^{n_0} kid\_score_i}{n_0}
 $$
 
-Es decir, que $b_0$ representa la puntuación media de los chicos cuya madre no ha terminado secundaria, `r coef(m)[1]`
+Es decir, que $\beta_0$ representa la puntuación media de los chicos cuya madre no ha terminado secundaria, `r coef(m)[1]`
 
 ```{r}
 mean(d$kid_score[d$mom_hs == "no"])
@@ -79,7 +79,7 @@ $$
 \sum_{i=1}^{n_1} kid\_score_i = \sum_{i=1}^{n_1} (\beta_0 + \beta_1 + e_i) = n_1 (\beta_0 + \beta_1) \Rightarrow \beta_0 + \beta_1 = \frac{\sum_{i=1}^{n_1} kid\_score_i}{n_1}
 $$
 
-Es decir, que $b_0 + b_1$ representa la puntuación media de los chicos cuya madre ha terminado secundaria, `r sum(coef(m))`. Por tanto, $\beta_1$ representa la diferencia entre las puntuaciones medias.
+Es decir, que $\beta_0 + \beta_1$ representa la puntuación media de los chicos cuya madre ha terminado secundaria, `r sum(coef(m))`. Por tanto, $\beta_1$ representa la diferencia entre las puntuaciones medias.
 
 ```{r}
 mean(d$kid_score[d$mom_hs == "si"])

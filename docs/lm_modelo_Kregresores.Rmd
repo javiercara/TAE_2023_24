@@ -173,6 +173,10 @@ e_1 \\ e_2 \\ \cdots \\ e_n
 \end{bmatrix}
 =
 \begin{bmatrix}
+\sum e_i \\ \sum x_{1i} e_i \\ \cdots \\ \sum x_{ki} e_i  
+\end{bmatrix}
+=
+\begin{bmatrix}
 0\\ 0 \\ \cdots \\ 0
 \end{bmatrix}
 $$
@@ -400,7 +404,7 @@ $$
 $$
 
 ```{r}
-( beta0 = mean(d$kid_score) - colMeans(Xa) %*% beta_a )
+( beta0 = mean(d$kid_score) - colMeans(d[,c(3,5)]) %*% beta_a )
 ```
 
 Por último, para la suma de los residuos al cuadrado:
@@ -412,5 +416,4 @@ Por último, para la suma de los residuos al cuadrado:
 (RSS = (n-1)*sy2 - (n-1)*t(beta_a) %*% Sxy)
 ```
 
-# Bondad del modelo ajustado
 

@@ -1542,8 +1542,8 @@ sin secundaria. Si sumamos en ambos lados del modelo se tiene:</p>
 \sum_{i=1}^{n_0} e_i = n_0 \beta_0 \Rightarrow \beta_0 =
 \frac{\sum_{i=1}^{n_0} kid\_score_i}{n_0}
 \]</span></p>
-<p>Es decir, que <span class="math inline">\(b_0\)</span> representa la
-puntuación media de los chicos cuya madre no ha terminado secundaria,
+<p>Es decir, que <span class="math inline">\(\beta_0\)</span> representa
+la puntuación media de los chicos cuya madre no ha terminado secundaria,
 77.5483871</p>
 <pre class="r"><code>mean(d$kid_score[d$mom_hs == &quot;no&quot;])</code></pre>
 <pre><code>## [1] 77.54839</code></pre>
@@ -1561,7 +1561,7 @@ con secundaria. Si sumamos en ambos lados del modelo se tiene:</p>
 e_i) = n_1 (\beta_0 + \beta_1) \Rightarrow \beta_0 + \beta_1 =
 \frac{\sum_{i=1}^{n_1} kid\_score_i}{n_1}
 \]</span></p>
-<p>Es decir, que <span class="math inline">\(b_0 + b_1\)</span>
+<p>Es decir, que <span class="math inline">\(\beta_0 + \beta_1\)</span>
 representa la puntuación media de los chicos cuya madre ha terminado
 secundaria, 89.3196481. Por tanto, <span class="math inline">\(\beta_1\)</span> representa la diferencia entre
 las puntuaciones medias.</p>
@@ -1784,7 +1784,8 @@ auxiliares</h2>
 <p>En el caso de tener regresores cualitativos con más de dos
 niveles:</p>
 <pre class="r"><code>levels(d$mom_work)</code></pre>
-<pre><code>## [1] &quot;notrabaja&quot;         &quot;trabaja23&quot;         &quot;trabaja1_parcial&quot;  &quot;trabaja1_completo&quot;</code></pre>
+<pre><code>## [1] &quot;notrabaja&quot;         &quot;trabaja23&quot;         &quot;trabaja1_parcial&quot; 
+## [4] &quot;trabaja1_completo&quot;</code></pre>
 <p>Definimos las variables axiliares:</p>
 <ul>
 <li>notrabaja_si = 1 si mom_work = notrabaja</li>
@@ -1889,7 +1890,8 @@ summary(m)</code></pre>
 <p>Comprobamos que internamente R crea variables auxiliares según los
 valores:</p>
 <pre class="r"><code>levels(d$mom_work)</code></pre>
-<pre><code>## [1] &quot;notrabaja&quot;         &quot;trabaja23&quot;         &quot;trabaja1_parcial&quot;  &quot;trabaja1_completo&quot;</code></pre>
+<pre><code>## [1] &quot;notrabaja&quot;         &quot;trabaja23&quot;         &quot;trabaja1_parcial&quot; 
+## [4] &quot;trabaja1_completo&quot;</code></pre>
 <pre class="r"><code>contrasts(d$mom_work)</code></pre>
 <pre><code>##                   trabaja23 trabaja1_parcial trabaja1_completo
 ## notrabaja                 0                0                 0
@@ -1900,7 +1902,8 @@ valores:</p>
 referencia:</p>
 <pre class="r"><code>d$mom_work = relevel(d$mom_work, ref=&quot;trabaja1_parcial&quot;)
 levels(d$mom_work)</code></pre>
-<pre><code>## [1] &quot;trabaja1_parcial&quot;  &quot;notrabaja&quot;         &quot;trabaja23&quot;         &quot;trabaja1_completo&quot;</code></pre>
+<pre><code>## [1] &quot;trabaja1_parcial&quot;  &quot;notrabaja&quot;         &quot;trabaja23&quot;        
+## [4] &quot;trabaja1_completo&quot;</code></pre>
 <pre class="r"><code>m = lm(kid_score ~ mom_work, data = d)
 summary(m)</code></pre>
 <pre><code>## 
@@ -1939,7 +1942,8 @@ kid\_score = \beta_0 + e
 los niveles de la variable factor:</p>
 <pre class="r"><code>d$mom_work1 = factor(d$mom_work, levels=c(&quot;trabaja1_completo&quot;,&quot;trabaja23&quot;,&quot;notrabaja&quot;,&quot;trabaja1_parcial&quot;))
 levels(d$mom_work1)</code></pre>
-<pre><code>## [1] &quot;trabaja1_completo&quot; &quot;trabaja23&quot;         &quot;notrabaja&quot;         &quot;trabaja1_parcial&quot;</code></pre>
+<pre><code>## [1] &quot;trabaja1_completo&quot; &quot;trabaja23&quot;         &quot;notrabaja&quot;        
+## [4] &quot;trabaja1_parcial&quot;</code></pre>
 <pre class="r"><code>m = lm(kid_score ~ mom_work1, data = d)
 summary(m)</code></pre>
 <pre><code>## 

@@ -1638,6 +1638,10 @@ e_1 \\ e_2 \\ \cdots \\ e_n
 \end{bmatrix}
 =
 \begin{bmatrix}
+\sum e_i \\ \sum x_{1i} e_i \\ \cdots \\ \sum x_{ki} e_i  
+\end{bmatrix}
+=
+\begin{bmatrix}
 0\\ 0 \\ \cdots \\ 0
 \end{bmatrix}
 \]</span></p>
@@ -1871,9 +1875,9 @@ Utilizamos la fórmula</p>
 \beta_0 = \bar y - (\beta_1 \bar x_{1} + \beta_2 \bar x_{2} + \cdots +
 \beta_k \bar x_{k})
 \]</span></p>
-<pre class="r"><code>( beta0 = mean(d$kid_score) - colMeans(Xa) %*% beta_a )</code></pre>
+<pre class="r"><code>( beta0 = mean(d$kid_score) - colMeans(d[,c(3,5)]) %*% beta_a )</code></pre>
 <pre><code>##          [,1]
-## [1,] 86.79724</code></pre>
+## [1,] 17.59625</code></pre>
 <p>Por último, para la suma de los residuos al cuadrado:</p>
 <pre class="r"><code># varianza de y
 (sy2 = S[1,1] )</code></pre>
@@ -1882,10 +1886,6 @@ Utilizamos la fórmula</p>
 <pre><code>##          [,1]
 ## [1,] 143665.4</code></pre>
 </div>
-</div>
-<div id="bondad-del-modelo-ajustado" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Bondad del modelo
-ajustado</h1>
 </div>
 
 
