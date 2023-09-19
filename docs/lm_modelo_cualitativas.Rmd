@@ -139,7 +139,7 @@ $$
 kid\_score_i = \beta_0 + e_i
 $$
 
-Razonando igual que antes tenemos que $b_0$ representa la puntuación media de los chicos cuya madre ha terminado secundaria, `r coef(m)[1]`. Como vemos el valor coincide con lo obtenido antes.
+Razonando igual que antes tenemos que $\beta_0$ representa la puntuación media de los chicos cuya madre ha terminado secundaria, `r coef(m)[1]`. Como vemos el valor coincide con lo obtenido antes.
 
 - Madres sin secundaria terminada (variable secundaria_no = 1): el modelo correspondiente es
 
@@ -203,7 +203,7 @@ $$
 kid\_score = \beta_1 secundaria\_si + \beta_2 secundaria\_no + e
 $$
 
-en el que se utilizan las dos variables auxiliares pero se elimina el parámetro $b_0$. Los modelos ahora son:
+en el que se utilizan las dos variables auxiliares pero se elimina el parámetro $\beta_0$. Los modelos ahora son:
 
 - madre que si ha terminado secundaria: secundaria_si = 1, secundaria_no = 0
 
@@ -217,7 +217,7 @@ $$
 kid\_score = \beta_2 + e
 $$
 
-Luego $b_1$ representa la puntuación media de los chicos cuya madre ha terminado secundaria y $b_2$ representa la puntuación media de los chicos cuya madre NO ha terminado secundaria.
+Luego $\beta_1$ representa la puntuación media de los chicos cuya madre ha terminado secundaria y $\beta_2$ representa la puntuación media de los chicos cuya madre NO ha terminado secundaria.
 
 ```{r}
 m = lm(kid_score ~ 0 + secundaria_si + secundaria_no, data = d)
@@ -258,7 +258,7 @@ trabaja1_completo_si = ifelse(d$mom_work == "trabaja1_completo", 1, 0)
 Como la variable cualitativa tiene **cuatro niveles**, con **tres variables auxiliares** representamos todos los casos. El modelo general es:
 
 $$
-kid\_score = \beta_0 + b_1 trabaja23\_si + \beta_2 trabaja1\_parcial\_si + \beta_3 trabaja1\_completo\_si + e
+kid\_score = \beta_0 + \beta_1 trabaja23\_si + \beta_2 trabaja1\_parcial\_si + \beta_3 trabaja1\_completo\_si + e
 $$
 
 - El modelo para las madres que no han trabajado es
@@ -267,7 +267,7 @@ $$
 kid\_score = \beta_0 + e
 $$
 
-ya que en este caso trabaja23_si = 0, trabaja1_parcial_si = 0 y trabaja1_completo_si = 0. Por tanto, la puntuación media de los chicos cuya madre no han trabajado es $b_0$.
+ya que en este caso trabaja23_si = 0, trabaja1_parcial_si = 0 y trabaja1_completo_si = 0. Por tanto, la puntuación media de los chicos cuya madre no han trabajado es $\beta_0$.
 
 - El modelo para las madres que trabajaron el segundo o tercer año es:
 
@@ -275,7 +275,7 @@ $$
 kid\_score = \beta_0 + \beta_1 + e
 $$
 
-por tanto $b_1$ representa las diferencias entre la puntuación media de los chicos cuya madre no trabaja y los de las madres que trabajaron el segunto o tercer año. 
+por tanto $\beta_1$ representa las diferencias entre la puntuación media de los chicos cuya madre no trabaja y los de las madres que trabajaron el segunto o tercer año. 
 
 - El modelo para las madres que trabajaron el primer año a tiempo parcial es:
 
