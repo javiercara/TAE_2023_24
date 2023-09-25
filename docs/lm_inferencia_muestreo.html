@@ -562,7 +562,8 @@ covarianzas</h3>
 y convarianzas, los estimadores son:</p>
 <p><span class="math display">\[
 \hat \beta_a = S_{XX}^{-1} S_{Xy} = \left( \frac{1}{n-1}X_a^T X_a
-\right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right)
+\right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right) = \left( X_a^T X_a
+\right)^{-1}  \left( X_a^T Y_a \right)
 \]</span></p>
 <p>donde <span class="math inline">\(\hat \beta_a = [\hat \beta_1 \ \hat
 \beta_2 \ \cdots \ \hat \beta_k]^T\)</span>. Por tanto hay que obtener
@@ -589,6 +590,10 @@ la misma forma que hicimos antes, obteniendo:</p>
 Y_a = X_a \beta_a + U, \quad U \sim N(0,\sigma I)
 \]</span></p>
 <p>Por tanto,</p>
+<p><span class="math display">\[
+Y_a \sim N \left( X_a \beta_a, \sigma^2I \right)
+\]</span></p>
+<p>Ahora se puede demostrar que</p>
 <p><span class="math display">\[
 \hat \beta_a \sim N \left( \beta_a, \frac{\sigma^2}{n-1} S_{XX}^{-1}
 \right)

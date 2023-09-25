@@ -175,7 +175,7 @@ $$
 Si en lugar de utilizar las matrices $(X^TX)^{-1}$ y $(X^T y)$ utilizamos matrices de varianzas y convarianzas, los estimadores son:
 
 $$
-\hat \beta_a = S_{XX}^{-1} S_{Xy} = \left( \frac{1}{n-1}X_a^T X_a \right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right)
+\hat \beta_a = S_{XX}^{-1} S_{Xy} = \left( \frac{1}{n-1}X_a^T X_a \right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right) = \left( X_a^T X_a \right)^{-1}  \left( X_a^T Y_a \right)
 $$
 
 donde $\hat \beta_a = [\hat \beta_1 \ \hat \beta_2 \ \cdots \ \hat \beta_k]^T$. Por tanto hay que obtener la distribución de $Y_a$. El modelo generador de datos es:
@@ -203,6 +203,12 @@ Y_a = X_a \beta_a + U, \quad U \sim N(0,\sigma I)
 $$
 
 Por tanto, 
+
+$$
+Y_a \sim N \left( X_a \beta_a, \sigma^2I \right)
+$$
+
+Ahora se puede demostrar que
 
 $$
 \hat \beta_a \sim N \left( \beta_a, \frac{\sigma^2}{n-1} S_{XX}^{-1} \right)
