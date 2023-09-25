@@ -298,7 +298,8 @@ $$
 y multiplicando ambos miembros por $X_a^T$:
 
 $$
-X_a^T y_a = X_a^T X_a \beta_a + X_a^T e \Rightarrow S_{Xy} = S_{XX} \beta_a
+X_a^T y_a = X_a^T X_a \beta_a + X_a^T e \Rightarrow \beta_a 
+ = \left( X_a^T X_a \right)^{-1}  \left( X_a^T Y_a \right) = \left( \frac{1}{n-1}X_a^T X_a \right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right)
 $$
 
 $$

@@ -99,11 +99,11 @@ sqrt( sum(resid(m)^2)/(434-2) )
 
 # Distribución en el muestreo de los estimadores puntuales
 
-## Distribución del estimador de $\beta$
+El hecho de considerar que nuestros datos han sido generados por un modelo con variables aleatorias hace que los estimadores sean variables aleatorias: si consideramos otra muestra diferente, los valores obtenidos serán diferentes, y antes de seleccionar la muestra no sabemos que valores vamos a obtener. En este apartado vamos a obtener la distribución de los estimadores.
 
-El hecho de considerar que nuestros datos han sido generados por un modelo con variables aleatorias hace que los estimadores sean variables aleatorias: si consideramos otra muestra diferente, los valores obtenidos serán diferentes, y antes de seleccionar la muestra no sabemos que valores vamos a obtener. 
+## Distribución de los datos
 
-Como hemos visto en el apartado anterior, la distribución de los estimadores la obtenemos teniendo en cuenta que:
+Como hemos visto en el apartado anterior, el modelo generador de los datos es:
 
 $$
 Y_i = \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + U_i, \quad U_i \sim N(0,\sigma), \quad i = 1,\cdots,n
@@ -112,11 +112,28 @@ $$
 En forma matricial
 
 $$
-Y = X \beta + U, \ U \sim N(0,\sigma \mathrm{I}) \Rightarrow
+Y = X \beta + U, \quad U \sim N(0,\sigma \mathrm{I})
 $$
+
+Como $U \sim Normal$, debido a las propiedades de la distribución normal, $Y \sim Normal$. Concretamente:
+
 $$
 Y \sim N(X \beta, \sigma \mathrm{I})
 $$
+
+ya que:
+
+$$
+E[Y] = E[ X\beta + U] = X \beta
+$$
+
+$$
+Var[Y] = Var[ X\beta + U] =  \sigma^2 I
+$$
+
+
+## Distribución del estimador de $\beta$
+
 
 ### Con matrices de datos
 
@@ -150,7 +167,7 @@ E[\hat \beta] = E[(X^TX)^{-1}X^T Y] = (X^TX)^{-1}X^T E[Y] = (X^TX)^{-1}X^T X\bet
 $$
 
 $$
-Var[\hat \beta] = Var[(X^TX)^{-1}X^T Y] = (X^TX)^{-1}X^T Var[Y] ((X^TX)^{-1}X^T)^T = (X^TX)^{-1} \sigma^2
+Var[\hat \beta] = Var[(X^TX)^{-1}X^T Y] = (X^TX)^{-1}X^T Var[Y] ((X^TX)^{-1}X^T)^T = \sigma^2 (X^TX)^{-1}
 $$
 
 ### Con matrices de covarianzas
@@ -158,22 +175,74 @@ $$
 Si en lugar de utilizar las matrices $(X^TX)^{-1}$ y $(X^T y)$ utilizamos matrices de varianzas y convarianzas, los estimadores son:
 
 $$
-\hat \beta_a = S_{XX}^{-1} S_{Xy} = \left( \frac{1}{n-1}X_a^T X_a \right)^{-1}  \left( \frac{1}{n-1} X_a^T y_a \right)
+\hat \beta_a = S_{XX}^{-1} S_{Xy} = \left( \frac{1}{n-1}X_a^T X_a \right)^{-1}  \left( \frac{1}{n-1} X_a^T Y_a \right)
 $$
 
-donde $\hat \beta_a = [\hat \beta_1 \ \hat \beta_2 \ \cdots \ \hat \beta_k]^T$. Faltaría el estimador de $\beta_0$ que se obtiene con la ecuación
+donde $\hat \beta_a = [\hat \beta_1 \ \hat \beta_2 \ \cdots \ \hat \beta_k]^T$. Por tanto hay que obtener la distribución de $Y_a$. El modelo generador de datos es:
 
 $$
-\hat \beta_0 = \bar y - \bar x^T \hat \beta_a
+Y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \cdots + \beta_k x_{ki} + U_i, \ i = 1,2,\cdots,n
+$$
+
+Teniendo en cuenta que:
+
+$$
+\bar Y = \beta_0 + \beta_1 \bar x_{1} + \beta_2 \bar x_{2} + \cdots + \beta_k \bar x_{k}
+$$
+
+y restando ambas ecuaciones se obtiene:
+
+$$
+Y_i - \bar Y = \beta_1 (x_{1i} - \bar x_{1}) + \beta_2 (x_{2i} - \bar x_{2}) + \cdots + \beta_k (x_{ki} - \bar x_{k}) + U_i, \ i = 1,2,\cdots,n
+$$
+
+Estas *n* ecuaciones se pueden expresar en forma matricial de la misma forma que hicimos antes, obteniendo:
+
+$$
+Y_a = X_a \beta_a + U, \quad U \sim N(0,\sigma I)
+$$
+
+Por tanto, 
+
+$$
+\hat \beta_a \sim N \left( \beta_a, \frac{\sigma^2}{n-1} S_{XX}^{-1} \right)
+$$
+
+ya que 
+
+$$Y_a \sim Normal \Rightarrow \hat \beta_a \sim Normal$$
+
+$$
+E[\hat \beta_a] = E[(X_a^T X_a)^{-1}X_a^T Y_a] = (X_a^T X_a)^{-1}X_a^T E[Y_a] = (X_a^T X_a)^{-1}X_a^T X_a \beta_a = \beta_a
+$$
+
+$$
+Var[\hat \beta_a] = Var[(X_a^T X_a)^{-1}X_a^T Y_a] = (X_a^T X_a)^{-1}X_a^T Var[Y_a] ((X_a^T X_a)^{-1}X_a^T)^T = \sigma^2 (X_a^T X_a)^{-1}
+$$
+
+Finalmente:
+
+$$
+S_{XX} = \frac{1}{n-1}X_a^T X_a \Rightarrow \left( X_a^T X_a \right)^{-1} = \frac{1}{n-1} S_{XX}^{-1}
+$$
+
+Faltaría el estimador de $\beta_0$ que se obtiene con la ecuación
+
+$$
+\hat \beta_0 = \bar Y - \bar x^T \hat \beta_a
 $$
 
 dónde $\bar x = [\bar x_1 \ \bar x_2 \ \cdots \ \bar x_n]^T$. Se puede demostrar que
 
 $$
-\hat \beta_a \sim N \left( \beta_a, \frac{\sigma^2}{n-1}S_{XX}^{-1} \right), \quad \hat \beta_0 \sim N \left( \beta_0, \sigma^2 \left( \frac{1}{n} + \frac{1}{n-1} \bar x^T S_{XX}^{-1} \bar x \right) \right)
+\hat \beta_0 \sim N \left( \beta_0, \sigma^2 \left( \frac{1}{n} + \frac{1}{n-1} \bar x^T S_{XX}^{-1} \bar x \right) \right)
 $$
 
-En la primera ecuación $\beta_a = [\beta_1 \ \beta_2 \ \cdots \ \beta_k]^T$.
+ya que:
+
+$$
+\bar Y \sim N \left( \beta_0 + \bar x^T \beta_a, \frac{\sigma^2}{n} \right)
+$$
 
 ## Distribución del estimador de $\sigma^2$
 
