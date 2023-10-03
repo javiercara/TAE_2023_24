@@ -30,6 +30,11 @@ para el modelo $y_i = \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + u_i$.
 $$
 \frac{\hat \beta_i - \beta_i}{se(\hat \beta_i)} \rightarrow t_{n-k-1}
 $$
+El procedimiento se puede resumir en:
+
+* Partimos de un estadístico con distribución conocida.
+* Suponemos que $H_0$ es cierta y obtenemos la distribución del estadístico.
+* Comprobamos si los datos que tenemos (la muestra) son un valor probable para la distribución obtenida o no.
 
 Por tanto, si $H_0$ es cierta:
 
@@ -108,18 +113,20 @@ data.frame(beta_e, beta_se, t_value, pvalores)
 
 # Relación entre intervalos de confianza y contrastes
 
-En el caso de contrastes bilaterales:
+Sean los contrastes bilaterales:
 
 $$
 H_0: \beta_i = 0 \\
 H_1: \beta_i \neq 0
 $$
 
-Y con intervalo de confianza:
+Y los intervalos de confianza de los mismos parámetros:
 
 $$
 \beta_i \in (a_i, b_i)
 $$
+
+Existe una relación entre ambos:
 
 - Si $0 \in (a_i, b_i) \Rightarrow$ no se rechaza $H_0$.
 - Si $0 \notin (a_i, b_i) \Rightarrow$ se rechaza $H_0$.
@@ -178,7 +185,13 @@ $$
 \frac{\chi^2_m / m}{\chi^2_n / n} \sim F_{m,n}
 $$
 
-## Descomposición de la variabilidad
+La distribución *F* es similar a la $\chi^2$:
+
+```{r}
+curve(df(x,10,5), from = 0, to = 10, col = "blue")
+```
+
+## Descomposición de la suma de cuadrados
 
 Tenemos el modelo
 
@@ -199,21 +212,73 @@ $$
 $$
 ya que $\sum (\hat y_i - \bar y) e_i = 0$. Se denominan:
 
-- Variabilitad total: 
+- Suma de cuadrados total: 
 
-$$VT = \sum (y_i - \bar y)^2 = (n-1)\hat s_y^2$$
+$$SST = \sum (y_i - \bar y)^2$$
 
-- Variabilidad explicada: 
+- Suma de cuadrados estimados por el modelo: 
 
-$$VE = \sum (\hat y_i - \bar y)^2$$
+$$SSM = \sum (\hat y_i - \bar y)^2$$
 
-- Variabilidad no explicada o residual: 
+- Suma de cuadrados de los residuos: 
 
-$$VNE = \sum e_i^2 = (n-k-1)\hat s_R^2$$
+$$SSR = \sum e_i^2$$
+
+## Expresiones alternativas para la suma de cuadrados
+
+- Suma de cuadrados total: 
+
+$$SST = (n-1)\hat s_y^2$$
+
+ya que la varianza $\hat{s}_y^2 = \frac{1}{n-1} \sum (y_i - \bar y)^2$.
+
+- Suma de cuadrados estimados por el modelo: 
+
+$$SSM = (n-1) \hat \beta_a^T S_{xx} \hat \beta_a = (n-1) \hat \beta_a^T S_{xy}$$
+
+Para probar esa relación se tiene que:
+
+$$
+\hat{y}_i - \bar{y} = \hat \beta_1 (x_{1i} - \bar{x}_1) + \cdots + \hat \beta_k (x_{ki} - \bar{x}_k)
+$$
+
+Por tanto:
+
+$$
+\begin{bmatrix}
+\hat y_1 - \bar y \\ \hat y_2 - \bar y \\ \cdots \\ \hat y_n - \bar y
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_{11} - \bar x_{1} & x_{21} - \bar x_{2} & \cdots  & x_{k1} - \bar x_{k} \\
+x_{12} - \bar x_{1} & x_{22} - \bar x_{2} & \cdots  & x_{k2} - \bar x_{k} \\
+\cdots &\cdots & \cdots & \cdots \\
+x_{1n} - \bar x_{1} & x_{2n} - \bar x_{2} & \cdots  & x_{kn} - \bar x_{k} \\
+\end{bmatrix}
+\begin{bmatrix}
+\hat \beta_1 \\ \hat \beta_2 \\ \cdots  \\ \hat \beta_k
+\end{bmatrix}
+$$
+
+Es decir
+
+$$
+\hat y_a = X_a \hat \beta_a
+$$
+
+$$
+SSM = \sum (\hat y_i - \bar y)^2 = \hat{y}_a^T \hat{y}_a = (n-1) \hat \beta_a^T S_{xx} \hat \beta_a
+$$
+
+- Suma de cuadrados de los residuos: 
+
+$$SSR = (n-k-1)\hat s_R^2$$
+
+ya que la varianza resiudal es $\hat{s}_R^2 = \frac{\sum e_i^2}{n-k-1}$.
 
 ## Contraste
 
-Es el contraste más importante en regresión múltiple, ya que establece si alguno de los regresores influye en la respuesta. Es decir, en el modelo $y_i = \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + u_i$ se constrasta si
+Este contraste establece, de manera conjunta, si alguno de los regresores influye en la respuesta. Es decir, en el modelo $y_i = \beta_0 + \beta_1 x_{1i} + \cdots + \beta_k x_{ki} + u_i$ se constrasta si
 
 $$
 H_0 : \beta_1 = \beta_2 = \cdots = \beta_k = 0 \\
@@ -222,14 +287,14 @@ $$
 
 Para resolver este contraste, se puede demostrar que:
 
-- Si $\beta_1 = \beta_2 = \cdots = \beta_k = 0 \Rightarrow VE/\sigma^2 \sim \chi^2_k$
-- $VNE/\sigma^2 \sim \chi^2_{n-k-1}$
-- VE y VNE son independientes.
+- Si $\beta_1 = \beta_2 = \cdots = \beta_k = 0 \Rightarrow SSM/\sigma^2 \sim \chi^2_k$
+- $SSR/\sigma^2 \sim \chi^2_{n-k-1}$
+- SSM y SSR son independientes.
 
 Por lo tanto es razonable utilizar el estadístico:
 
 $$
-\frac{\frac{VE/\sigma^2}{k}}{\frac{VNE/\sigma^2}{n-k-1}} \sim F_{k, n-k-1} \Rightarrow F_0 = \frac{VE/k}{VNE/(n-k-1)} \sim F_{k, n-k-1}
+\frac{\frac{SSM/\sigma^2}{k}}{\frac{SSR/\sigma^2}{n-k-1}} \sim F_{k, n-k-1} \Rightarrow F_0 = \frac{SSM/k}{SSR/(n-k-1)} \sim F_{k, n-k-1}
 $$
 
 Se rechazará la hipótesis nula para valores grandes del estadístico:
@@ -242,10 +307,10 @@ Se rechazará la hipótesis nula para valores grandes del estadístico:
 Queremos contrastar si $\beta_{mom\_age} = \beta_{mom\_hs} = \beta_{mom\_iq}= 0$ en el modelo *kid_score ~ mom_hs + mom_iq + mom_age*, es decir, si estos regresores influyen en la puntuación obtenida en el test.
 
 ```{r}
-(VT = sum((d$kid_score - mean(d$kid_score))^2) )
-(VNE = sum(resid(m1)^2))
-(VE = VT - VNE)
-(F_0 = VE/k/(VNE/(n-k-1)))
+(SST = sum((d$kid_score - mean(d$kid_score))^2) )
+(SSR = sum(resid(m1)^2))
+(SSM = SST - SSR)
+(F_0 = SSM/k/(SSR/(n-k-1)))
 (F_alfa = qf(0.05, df1 = k, df2 =n-5-1))
 # pvalor
 1 - pf(F_0, k, n-k-1)
@@ -273,10 +338,10 @@ $$
 y = X' \beta' + u', \ dim(\beta') = m \times 1 
 $$
 
-Sea *VNE(k)* la variabilidad no explicada del primer modelo, y *VNE(m)* la variabilidad no explicada del segundo modelo. Se puede demostrar que:
+Sea *SSR(k)* la suma de cuadrados residual del primer modelo, y *SSR(m)* la suma de cuadrados residual del segundo modelo. Se puede demostrar que:
 
 $$
-F_0 = \frac{(VNE(m)-VNE(k))/(k-m)}{VNE(k)/(n-k-1)} \sim F_{k-m, n-k-1}
+F_0 = \frac{(SSR(m)-SSR(k))/(k-m)}{SSR(k)/(n-k-1)} \sim F_{k-m, n-k-1}
 $$
 
 Con este estadístico podemos resolver el contraste 
@@ -286,7 +351,7 @@ H_0 : \text{Los modelos son iguales} \\
 H_1 : \text{Los modelos NO son iguales}
 $$
 
-Si el estadístico toma valores pequeños quiere decir que la varianza residual es parecida en ambos modelos, luego se considera que los modelos son equivalentes. Por tanto, se rechazará la hipótesis nula para valores grandes del estadístico:
+Si el estadístico toma valores pequeños quiere decir que la suma de cuadrados residual es parecida en ambos modelos, luego se considera que los modelos son equivalentes. Por tanto, se rechazará la hipótesis nula para valores grandes del estadístico:
 
 - si $F_0 > F_\alpha$: se rechaza $H_0$
 - si $F_0 \leq F_\alpha$: no se rechaza $H_0$
@@ -298,9 +363,9 @@ Vamos a analizar si el regresor *mom_age* puede eliminarse de la lista. El contr
 
 ```{r}
 m2 = lm(kid_score ~ mom_hs + mom_iq, data = d)
-(VNE2 = sum(resid(m2)^2))
+(SSR2 = sum(resid(m2)^2))
 m = 2
-(F_0 = ((VNE2 - VNE)/(k-m))/(VNE/(n-k-1)))
+(F_0 = ((SSR2 - SSR)/(k-m))/(SSR/(n-k-1)))
 # F_alfa
 qf(0.95, k-m, n-k-1)
 # pvalor
@@ -335,9 +400,9 @@ El contraste que resolvemos es $H_0 : \beta_{mom\_iq} = \beta_{mom\_age} = 0$ en
 
 ```{r}
 m4 = lm(kid_score ~ mom_hs, data = d)
-(VNE4 = sum(resid(m4)^2))
+(SSR4 = sum(resid(m4)^2))
 m = 1
-(F_0 = ((VNE4 - VNE)/(k-m))/(VNE/(n-k-1)))
+(F_0 = ((SSR4 - SSR)/(k-m))/(SSR/(n-k-1)))
 # F_alfa
 qf(0.05, k-m, n-k-1)
 # pvalor
@@ -358,9 +423,9 @@ El contraste que resolvemos es $H_0 : \beta_{mom\_iq} = \beta_{mom\_age}$ en el 
 
 ```{r}
 m5 = lm(kid_score ~ mom_hs + I(mom_iq + mom_age), data = d)
-(VNE5 = sum(resid(m5)^2))
+(SSR5 = sum(resid(m5)^2))
 m = 2
-(F_0 = ((VNE5 - VNE)/(k-m))/(VNE/(n-k-1)))
+(F_0 = ((SSR5 - SSR)/(k-m))/(SSR/(n-k-1)))
 # pvalor
 1-pf(F_0, k-m, n-k-1)
 ```
@@ -384,31 +449,31 @@ $$kid\_score = \beta_0 + \beta_1 mom\_hssi + \beta_2 mom\_iq + \beta_3 mom\_age 
 La hipótesis nula del contraste es: $H_0 : \beta_2 = \beta_3$. Para encontrar el estadístico del contraste tenemos que:
 
 $$
-\hat \beta_2 \sim N(\beta_2, \sigma^2 \tilde Q_{3,3}), \quad \hat \beta_3 \sim N(\beta_3, \sigma^2 \tilde Q_{4,4})
+\hat \beta_2 \sim N(\beta_2, \sigma^2 Q_{3,3}), \quad \hat \beta_3 \sim N(\beta_3, \sigma^2 Q_{4,4})
 $$
 
 Por tanto:
 
 $$
-\hat \beta_2 - \hat \beta_3 \sim N(\beta_2 - \beta_3, \sigma^2 (\tilde Q_{3,3} + \tilde Q_{4,4} - 2\tilde Q_{3,4}))
+\hat \beta_2 - \hat \beta_3 \sim N(\beta_2 - \beta_3, \sigma^2 (Q_{3,3} + Q_{4,4} - 2 Q_{3,4}))
 $$
 
 Es decir:
 
 $$
-\frac{(\hat \beta_2 - \hat \beta_3) - (\beta_2 - \beta_3)}{\sqrt{\sigma^2 (\tilde Q_{3,3} + \tilde Q_{4,4} - 2\tilde Q_{3,4}))}} \sim N(0,1)
+\frac{(\hat \beta_2 - \hat \beta_3) - (\beta_2 - \beta_3)}{\sqrt{\sigma^2 (Q_{3,3} + Q_{4,4} - 2 Q_{3,4}))}} \sim N(0,1)
 $$
 
 Reemplazando $\sigma^2$ por $\hat s_R^2$ se tiene:
 
 $$
-\frac{(\hat \beta_2 - \hat \beta_3) - (\beta_2 - \beta_3)}{\sqrt{\hat s_R^2 (\tilde Q_{3,3} + \tilde Q_{4,4} - 2\tilde Q_{3,4}))}} \sim t_{n-k-1}
+\frac{(\hat \beta_2 - \hat \beta_3) - (\beta_2 - \beta_3)}{\sqrt{\hat s_R^2 ( Q_{3,3} + Q_{4,4} - 2 Q_{3,4}))}} \sim t_{n-k-1}
 $$
 
 Finalmente el estadístico del contraste cuando $H_0$ es cierta es:
 
 $$
-t_0 = \frac{\hat \beta_2 - \hat \beta_3}{\sqrt{\hat s_R^2 (\tilde Q_{3,3} + \tilde Q_{4,4} - 2\tilde Q_{3,4}))}} \sim t_{n-k-1}
+t_0 = \frac{\hat \beta_2 - \hat \beta_3}{\sqrt{\hat s_R^2 (Q_{3,3} + Q_{4,4} - 2 Q_{3,4}))}} \sim t_{n-k-1}
 $$
 
 ```{r}

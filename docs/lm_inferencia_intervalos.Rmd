@@ -62,6 +62,15 @@ $$
 \hat \beta_i \pm t_{n-k-1;\alpha/2} se(\hat \beta_i), \quad i = 0,1,2,\cdots,k.
 $$
 
+La distribución *t-student* es similar a la *N(0,1)*. De hecho, $\lim _{n \to \infty} t_n = N(0,1)$.
+
+```{r}
+curve(dnorm(x,0,1), from = -5, to = 5, col = "blue")
+curve(dt(x,5), add = T, col = "green")
+curve(dt(x,20), add = T, col = "red")
+```
+
+
 ## Con matrices de covarianzas
 
 Tenemos que
@@ -119,6 +128,12 @@ Despejando:
 $$
 \frac{(n-k-1)\hat s_R^2}{\chi^2_{n-k-1;\alpha/2}} \leq \sigma^2 \leq \frac{(n-k-1)\hat s_R^2}{\chi^2_{n-k-1;1-\alpha/2}}
 $$
+Podemos dibujar la distribución $\chi^2$:
+
+```{r}
+curve(dchisq(x,5), from = 0, to =50, col = "blue")
+curve(dchisq(x,20), add = T, col = "red")
+```
 
 # Ejemplo
 
