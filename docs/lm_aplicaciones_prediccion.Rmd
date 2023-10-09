@@ -17,7 +17,7 @@ Podemos identificar dos aplicaciones básicas de los modelos de regresión:
 - Predecir.
 - Describir relaciones entre variables.
 
-# Predicción del valor medio
+# Estimación del valor medio
 
 Sea el modelo de regresión
 
@@ -40,7 +40,7 @@ y_i =
 x_i^T \beta + u_i, \ i = 1,2,\cdots,n
 $$
 
-Si consideramos un dato que no está incluido en la muestra, $x_p^T = [1 \ x_{1p} \ x_{2p} \ \cdots \ x_{kp}]$, se tiene que cumplir que
+Por ejemplo, si consideramos los valores de los regresores $x_p^T = [1 \ x_{1p} \ x_{2p} \ \cdots \ x_{kp}]$, se tiene que cumplir que
 
 $$
 y_p = x_p^T \beta + u_p, \quad u_p \sim N(0,\sigma^2)
@@ -52,7 +52,7 @@ $$
 E[y_p] = E[x_p^T \beta + u_p] = x_p^T \beta
 $$
 
-Por tanto la predicción del valor medio de $y_p$, $E[y_p]$, será:
+Por este motivo es usual utilizar el siguiente estimador de $E[y_p]$:
 
 $$
 \hat y_p = x_p^T \hat \beta
@@ -64,9 +64,9 @@ $$
 E[\hat y_p] = E[x_p^T \hat \beta] = x_p^T E[\hat \beta] = x_p^T \beta
 $$
 
-En la práctica, cuando se habla de predecir el valor de $y$ en el punto $x_p$ lo que se hace es predecir el valor medio de $y_p$.
+En la práctica, cuando se habla de predecir el valor de $y$ en el punto $x_p$ lo que se hace es estimar el valor medio de $y_p$, es decir, $\hat y_p$.
 
-# Varianza de la predicción del valor medio 
+# Varianza de la estimación del valor medio 
 
 ## Con matrices de datos
 
@@ -128,7 +128,7 @@ $$
 v_p = \frac{1}{n} + \frac{1}{n-1} (\tilde x_p - \bar x)^T S_{XX}^{-1} (\tilde x_p - \bar x)
 $$
 
-# Intervalo de confianza de la predicción del valor medio
+# Intervalo de confianza de la estimación del valor medio
 
 Primero vamos a deducir la distribución de $\hat y_p = x_p^T \hat \beta$. Como $\hat \beta$ tiene distribución normal, se tiene que:
 
@@ -139,7 +139,7 @@ $$
 donde $se(\hat y_p) = \hat s_R\sqrt{v_p}$. Finalmente, el intervalo de confianza para $E[y_p] = x_p^T \beta$ es:
 
 $$
-\hat y_p - t_{\alpha/2} se(\hat y_p) \leq (x_p^T \beta) \leq \hat y_p + t_{\alpha/2} se(\hat y_p)
+\hat y_p - t_{\alpha/2} se(\hat y_p) \leq E[y_p] \leq \hat y_p + t_{\alpha/2} se(\hat y_p)
 $$
 
 Recordad que los intervalos de confianza se definen para parámetros del modelo. En este caso el intervalo de confianza se ha definido para una combinación lineal de parámetros.
@@ -210,7 +210,7 @@ Esto no es un intervalo de confianza ya que $y_p$ no es un parámetro, sino que 
 
 Sea un valor para los regresores $x_p$. Según el modelo $y_p = x_p^T \beta + u_p, \ u_p \sim N(0, \sigma^2)$:
 
-- Si queremos asignar un *valor puntual* para la predicción de $y_p$ utilizaremos el valor medio predicho, $\hat y_p = x_p^T \hat \beta$, que es un estimador centrado del valor medio teórico, $x_p^T \beta$. Es posible calcular un intervalo de confianza para el valor medio teórico.
+- Si queremos asignar un *valor puntual* para la predicción de $y_p$ es usual utilizar la estimación del valor medio, $\hat y_p = x_p^T \hat \beta$, que es un estimador centrado del valor medio teórico, $x_p^T \beta$. Es posible calcular un intervalo de confianza para el valor medio teórico.
 - También se puede construir un intervalo para la predicción de $y_p$.
 
 # Ejemplo
@@ -229,7 +229,7 @@ plot(d$mom_iq, d$kid_score, pch = 19)
 abline(m, col = "red", lwd = 1)
 ```
 
-### Prediccion del valor medio
+### Estimación del valor medio
 
 ```{r}
 xp = matrix(c(1, 130), ncol = 1)
@@ -304,7 +304,7 @@ m2 = lm(kid_score ~ mom_iq + mom_hs + mom_age + mom_work, data = d)
 summary(m2)
 ```
 
-### Prediccion del valor medio
+### Estimación del valor medio
 
 Recordamos que el modelo sería: 
 
@@ -379,4 +379,4 @@ quantile(yp_medio_b, probs = c(0.025, 0.975))
 
 ## Intervalo de predicción
 
-En este caso no se puede utilizar bootstrap. El método bootstrap se utiliza para calcular intervalos de confianza y se basa en remuestrear residuos. Pero $y_p$ es una variable aleatoria, no unos residuos. 
+En este caso no se puede utilizar bootstrap. El método bootstrap se utiliza para calcular intervalos de confianza. Pero $y_p$ es una variable aleatoria y el intervalo de predicción no es un intervalo de confianza. 
