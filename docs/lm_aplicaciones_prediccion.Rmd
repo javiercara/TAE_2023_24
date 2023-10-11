@@ -17,6 +17,11 @@ Podemos identificar dos aplicaciones básicas de los modelos de regresión:
 - Predecir.
 - Describir relaciones entre variables.
 
+La predicción en el modelo de regresión se puede enfocar de dos formas diferentes
+
+- Estimación del valor medio y su intervalo de confianza.
+- Intervalo de predicción.
+
 # Estimación del valor medio
 
 Sea el modelo de regresión
@@ -158,44 +163,38 @@ $$
 P(a \leq y_p \leq b) = 1-\alpha
 $$
 
-Sin embargo no podemos utilizar la distribución de $y_p$ ya que desconocemos $\beta$ y $\sigma^2$. La opción es trabajar con el error de predicción. Se define el error de predicción como la diferencia entre $y_p$ y su valor medio predicho $\hat{y}_p$:
-
-$$
-\epsilon_p = y_p - \hat y_p = y_p - x_p^T \hat \beta
-$$
-
-La variable aleatoria $\epsilon_p$ no es un residuo. Los residuos se definen para datos observados. Hemos visto que
+Sin embargo no podemos utilizar la distribución de $y_p$ ya que desconocemos $\beta$ y $\sigma^2$. La opción es trabajar con la diferencia entre $y_p$ y su valor medio predicho $\hat{y}_p$. Hemos visto que
 
 $$
 \hat y_p \sim N(x_p^T \beta, \sigma^2 v_p)
 $$
 
-Por tanto podemos calcular la distribución de $\epsilon_p = y_p - \hat y_p$:
+Por tanto podemos calcular la distribución de $y_p - \hat y_p$:
 
 $$
-\epsilon_p \sim N(0, \sigma^2(1 + v_p))
+y_p - \hat y_p \sim N(0, \sigma^2(1 + v_p))
 $$
 
 ya que:
 
 $$
-E[\epsilon_p] = E[y_p] - E[\hat y_p] = x_p^T \beta - x_p^T \beta = 0
+E[y_p - \hat y_p] = E[y_p] - E[\hat y_p] = x_p^T \beta - x_p^T \beta = 0
 $$
 
 $$
-Var[\epsilon_p] = Var[y_p] + Var[\hat y_p] = \sigma^2 + \sigma^2 v_p= \sigma^2 (1 + v_p)
+Var[y_p - \hat y_p] = Var[y_p] + Var[\hat y_p] = \sigma^2 + \sigma^2 v_p= \sigma^2 (1 + v_p)
 $$
 
 donde se ha considerado que $y_p$ e $\hat y_p$ son independientes. Utilizando la varianza residual tenemos:
 
 $$
-\frac{\epsilon_p}{\hat s_R\sqrt{1 + v_p}} \sim t_{n-k-1}
+\frac{y_p - \hat y_p}{\hat s_R\sqrt{1 + v_p}} \sim t_{n-k-1}
 $$
 
 Con lo que se puede encontrar que:
 
 $$
-P \left( - t_{\alpha/2} \hat s_R\sqrt{1 + v_p} \leq \epsilon_p \leq t_{\alpha/2} \hat s_R\sqrt{1 + v_p} \right) = 1 - \alpha
+P \left( - t_{\alpha/2} \hat s_R\sqrt{1 + v_p} \leq y_p - \hat y_p \leq t_{\alpha/2} \hat s_R\sqrt{1 + v_p} \right) = 1 - \alpha
 $$
 
 Finalmente, el intervalo para $y_p$ que estábamos buscando se calcula como:
@@ -331,7 +330,7 @@ yp_medio[1,1] + c(-1,1)*qt(0.975,n-k-1)*sqrt(sR2*(vp[1,1]))
 X1 = X[,2:(k+1)]
 Sxx = var(X1)
 xp1 = xp[2:(k+1),]
-xm = colMeans(X1)
+xm = apply(X1, 2, mean)
 (vp1 = 1/n + 1/(n-1)*t(xp1 - xm) %*% solve(Sxx) %*% (xp1 - xm) )
 ```
 - En R:
@@ -379,4 +378,4 @@ quantile(yp_medio_b, probs = c(0.025, 0.975))
 
 ## Intervalo de predicción
 
-En este caso no se puede utilizar bootstrap. El método bootstrap se utiliza para calcular intervalos de confianza. Pero $y_p$ es una variable aleatoria y el intervalo de predicción no es un intervalo de confianza. 
+En este caso no se puede utilizar bootstrap. Con el modelo estimado se puede calcular $\hat{y}_p = x_p^T \hat \beta$ en cada réplica de bootstrap; sin embargo no se puede calcular $y_p = x_p^T \hat \beta + e_p$, ya que $e_p$ es desconocido (recordamos que $e_p$ se define como $y_p - \hat y_p$, pero $y_p$ es desconocido, es lo que queremos calcular). Por tanto, no es posible construir el intervalo de predicción con bootstrap. 
