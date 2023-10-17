@@ -107,8 +107,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -116,16 +116,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -329,8 +322,7 @@ p(x) = a_0 + a_1 b_1(x) + a_2 b_2(x) + \cdots + a_{k+3} b_{k+3}(x)
 </ul>
 <pre class="r"><code># k = df - 3, se utilizan quantiles para definir los nodos
 attr(bs(d$age, df = 6), &quot;knots&quot;)</code></pre>
-<pre><code>## 25% 50% 75% 
-##  33  42  50</code></pre>
+<pre><code>## [1] 33 42 50</code></pre>
 </div>
 <div id="estimacion-del-modelo" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Estimacion del modelo</h2>

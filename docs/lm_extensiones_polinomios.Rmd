@@ -141,7 +141,7 @@ plot(r2_adj, type = "b")
 Como vemos, no aumentamos el R2 para ordenes mayores de 4. Podemos afinar más utilizando el contraste de la F:
 
 $$
-F_0 = \frac{(VNE(m)-VNE(k))/(k-m)}{VNE(k)/(n-k-1)} \sim F_{k-m, n-k-1}
+F_0 = \frac{(SSR(m)-SSR(k))/(k-m)}{SSR(k)/(n-k-1)} \sim F_{k-m, n-k-1}
 $$
 
 Vamos a comparar los modelos de grado 3, 4 y 5:
@@ -189,7 +189,11 @@ $$
 donde $P_k(x_i)$ es el polinomio de orden k que verifica:
 
 $$
-\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ r \neq s, \ r,s = 1,2,\ldots,k
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 1, \ r = s
+$$
+
+$$
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ r \neq s
 $$
 
 es decir, son polinomios ortogonales. El modelo sigue siendo $y = X\beta + u$, con
