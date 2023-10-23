@@ -82,6 +82,27 @@ m1 = lm(wage ~ age + I(age^2) + I(age^3) + I(age^4), data = d)
 summary(m1)
 ```
 
+Para hacer predicciones con este modelo, por ejemplo, para *age = 29*:
+
+```{r}
+age = 29
+xp = data.frame(age, I(age^2), I(age^3), I(age^4))
+predict(m1, newdata = xp, interval = "confidence")
+```
+
+Si vemos el contenido de xp
+
+```{r}
+print(xp)
+```
+
+Esto sugiere otra manera de hacer la predicción:
+
+```{r}
+xp1 = data.frame(age = age, age.2 = age^2, age.3 = age^3, age.4 = age^4)
+predict(m1, newdata = xp1, interval = "confidence")
+```
+
 - Definiendo un cambio de variables:
 
 ```{r}
@@ -93,6 +114,13 @@ m2 = lm(wage ~ z1 + z2 + z3 + z4, data = d)
 summary(m2)
 ```
 
+Para predecir:
+
+```{r}
+xp2 = data.frame(z1 = age, z2 = age^2, z3 = age^3, z4 = age^4)
+predict(m1, newdata = xp2, interval = "confidence")
+```
+
 - Con la función *poly()*:
 
 ```{r}
@@ -100,7 +128,14 @@ m3 = lm(wage ~ poly(age, degree = 4, raw = T), data = d)
 summary(m3)
 ```
 
-La opción raw = T es necesaria, porque de lo contrario utiliza polinomios ortogonales. Vamos a dibujar la curva y los intervalos de confianza y predicción:
+La opción raw = T es necesaria, porque de lo contrario utiliza polinomios ortogonales. Para predecir:
+
+```{r}
+xp3 = data.frame(age = age)
+predict(m1, newdata = xp3, interval = "confidence")
+```
+
+Es decir, la función *poly()* internamente crea las variables necesarias a partir de *age*. Vamos a dibujar la curva y los intervalos de confianza y predicción:
 
 ```{r}
 age_grid = seq(from = min(d$age), to = max(d$age), by = 1)
@@ -189,11 +224,11 @@ $$
 donde $P_k(x_i)$ es el polinomio de orden k que verifica:
 
 $$
-\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 1, \ r = s
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) \neq 0, \ \text{cuando } r = s;
 $$
 
 $$
-\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ r \neq s
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ \text{cuando } r \neq s;
 $$
 
 es decir, son polinomios ortogonales. El modelo sigue siendo $y = X\beta + u$, con

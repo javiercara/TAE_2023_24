@@ -347,6 +347,21 @@ summary(m1)</code></pre>
 ## Residual standard error: 30.16 on 2916 degrees of freedom
 ## Multiple R-squared:  0.1094, Adjusted R-squared:  0.1082 
 ## F-statistic: 89.55 on 4 and 2916 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Para hacer predicciones con este modelo, por ejemplo, para <em>age = 29</em>:</p>
+<pre class="r"><code>age = 29
+xp = data.frame(age, I(age^2), I(age^3), I(age^4))
+predict(m1, newdata = xp, interval = &quot;confidence&quot;)</code></pre>
+<pre><code>##        fit    lwr      upr
+## 1 99.03991 96.883 101.1968</code></pre>
+<p>Si vemos el contenido de xp</p>
+<pre class="r"><code>print(xp)</code></pre>
+<pre><code>##   age age.2 age.3  age.4
+## 1  29   841 24389 707281</code></pre>
+<p>Esto sugiere otra manera de hacer la predicción:</p>
+<pre class="r"><code>xp1 = data.frame(age = age, age.2 = age^2, age.3 = age^3, age.4 = age^4)
+predict(m1, newdata = xp1, interval = &quot;confidence&quot;)</code></pre>
+<pre><code>##        fit    lwr      upr
+## 1 99.03991 96.883 101.1968</code></pre>
 <ul>
 <li>Definiendo un cambio de variables:</li>
 </ul>
@@ -377,6 +392,11 @@ summary(m2)</code></pre>
 ## Residual standard error: 30.16 on 2916 degrees of freedom
 ## Multiple R-squared:  0.1094, Adjusted R-squared:  0.1082 
 ## F-statistic: 89.55 on 4 and 2916 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Para predecir:</p>
+<pre class="r"><code>xp2 = data.frame(z1 = age, z2 = age^2, z3 = age^3, z4 = age^4)
+predict(m1, newdata = xp2, interval = &quot;confidence&quot;)</code></pre>
+<pre><code>##        fit    lwr      upr
+## 1 99.03991 96.883 101.1968</code></pre>
 <ul>
 <li>Con la función <em>poly()</em>:</li>
 </ul>
@@ -403,7 +423,12 @@ summary(m3)</code></pre>
 ## Residual standard error: 30.16 on 2916 degrees of freedom
 ## Multiple R-squared:  0.1094, Adjusted R-squared:  0.1082 
 ## F-statistic: 89.55 on 4 and 2916 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>La opción raw = T es necesaria, porque de lo contrario utiliza polinomios ortogonales. Vamos a dibujar la curva y los intervalos de confianza y predicción:</p>
+<p>La opción raw = T es necesaria, porque de lo contrario utiliza polinomios ortogonales. Para predecir:</p>
+<pre class="r"><code>xp3 = data.frame(age = age)
+predict(m1, newdata = xp3, interval = &quot;confidence&quot;)</code></pre>
+<pre><code>##        fit    lwr      upr
+## 1 99.03991 96.883 101.1968</code></pre>
+<p>Es decir, la función <em>poly()</em> internamente crea las variables necesarias a partir de <em>age</em>. Vamos a dibujar la curva y los intervalos de confianza y predicción:</p>
 <pre class="r"><code>age_grid = seq(from = min(d$age), to = max(d$age), by = 1)
 yp = predict(m1, newdata = data.frame(age = age_grid), se = TRUE)
 yp = predict(m1, newdata = data.frame(age = age_grid), interval = &quot;confidence&quot;, level = 0.95)
@@ -507,10 +532,10 @@ y_i = \beta_0 + \beta_1 P_1(x_i) + \beta_2 P_2(x_i) + \cdots + \beta_k P_k(x_i) 
 \]</span></p>
 <p>donde <span class="math inline">\(P_k(x_i)\)</span> es el polinomio de orden k que verifica:</p>
 <p><span class="math display">\[
-\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 1, \ r = s
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) \neq 0, \ \text{cuando } r = s;
 \]</span></p>
 <p><span class="math display">\[
-\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ r \neq s
+\sum _{i=1}^n  P_r(x_i)  P_s(x_i) = 0, \ \text{cuando } r \neq s;
 \]</span></p>
 <p>es decir, son polinomios ortogonales. El modelo sigue siendo <span class="math inline">\(y = X\beta + u\)</span>, con</p>
 <p><span class="math display">\[

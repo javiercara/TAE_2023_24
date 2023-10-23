@@ -37,13 +37,10 @@ output:
     a. [Bondad del ajuste](lm_bondad_ajuste.html) [(pdf)](lm_bondad_ajuste.pdf)
 5. Diagnosis
     a. [Análisis de los residuos del modelo](lm_diagnosis.html) [(pdf)](lm_diagnosis.pdf)
-6. Ejemplo
-    a. [Ejemplo completo de regresión lineal](lm_ejemplo1.html) [(pdf)](lm_ejemplo1.pdf)
-7. Extensiones del modelo lineal
+6. Extensiones del modelo lineal
     a. [Regresores polinómicos](lm_extensiones_polinomios.html) [(pdf)](lm_extensiones_polinomios.pdf)
-    b. [Splines](lm_extensiones_splines.html) [(pdf)](lm_extensiones_splines.pdf)
-    c. [Modelos Aditivos](lm_extensiones_modelosAditivos.html) [(pdf)](lm_extensiones_modelosAditivos.pdf)
-    d. [Regresión local](lm_extensiones_regresionLocal.html) [(pdf)](lm_extensiones_regresionLocal.pdf)
+7. Ejemplo
+    a. [Ejemplo completo de regresión lineal](lm_ejemplo1.html) [(pdf)](lm_ejemplo1.pdf)
 8. Validación cruzada
     a. [Validación cruzada](lm_validacion_cruzada.html) [(pdf)](lm_validacion_cruzada.pdf)
 9. Comparación de modelos y selección de variables
