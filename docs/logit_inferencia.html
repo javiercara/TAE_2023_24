@@ -107,8 +107,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -116,16 +116,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -266,13 +259,16 @@ H_{logL}(\beta) = - X^T W X
 <p>En el caso de la propiedad anterior, la matriz <span class="math inline">\(I(\beta)\)</span> está evaluada en el valor que maximiza la verosimilitud.</p>
 <p>Por tanto, cada estimador de manera individual se distribuye como:</p>
 <p><span class="math display">\[
-\hat \beta_j \sim N(\beta_j, se(\hat \beta_j))
+\hat \beta_j \sim N(\beta_j, Var(\hat \beta_j))
 \]</span></p>
 <p>donde</p>
 <p><span class="math display">\[
-se(\hat \beta_j) = \sqrt{I_{jj}(\hat \beta)}
+Var(\hat \beta_j) = I_{(j+1,j+1)}(\hat \beta), \quad j = 0,1,\ldots,k
 \]</span></p>
-<p>es decir, los elementos de la diagonal de la matriz <span class="math inline">\(I(\hat \beta)\)</span>.</p>
+<p>es decir, los elementos de la diagonal de la matriz <span class="math inline">\(I(\hat \beta)\)</span>. Al igual que en regresión lineal, el <em>standard error</em> de los estimadores es:</p>
+<p><span class="math display">\[
+se(\hat \beta_j) = \sqrt{Var(\hat \beta_j)}
+\]</span></p>
 </div>
 <div id="contrastes-de-hipótesis-individuales" class="section level2" number="1.2">
 <h2><span class="header-section-number">1.2</span> Contrastes de hipótesis individuales</h2>
@@ -299,7 +295,7 @@ str(d)</code></pre>
 <pre class="r"><code>#d$InMichelin = factor(d$InMichelin)</code></pre>
 <p>Estimamos los parámetros del modelo (se van a utilizar las funciones de R del archivo <a href="logit_funciones.R">logit_funciones.R</a>):</p>
 <pre class="r"><code># cargamos las funciones que vamos a utilizar
-source(&quot;logit_funciones.R&quot;)
+source(&quot;funciones/logit_funciones.R&quot;)
 
 # punto de partida
 m = lm(InMichelin ~ Food + Decor + Service + Price, data = d)
@@ -360,10 +356,6 @@ summary(m1)</code></pre>
 ## Call:
 ## glm(formula = InMichelin ~ Food + Decor + Service + Price, family = binomial, 
 ##     data = d)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -3.3923  -0.6723  -0.3810   0.7169   1.9694  
 ## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(&gt;|z|)    

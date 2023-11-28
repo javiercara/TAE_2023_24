@@ -154,7 +154,7 @@ se(\hat \beta_3 + \hat \beta_7) = \sqrt{Var(\hat \beta_3) + Var(\hat \beta_7) + 
 $$
 
 ```{r}
-source("logit_funciones.R")
+source("funciones/logit_funciones.R")
 H = logit_hess(coef(m3), model.matrix(m3))
 V = -solve(H)
 (se = sqrt(V[4,4] + V[8,8] + 2*V[4,8]))

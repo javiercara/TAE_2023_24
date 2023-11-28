@@ -107,8 +107,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -116,16 +116,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -326,10 +319,6 @@ summary(m1)</code></pre>
 ## glm(formula = InMichelin ~ Food + Decor + Service + Price, family = binomial, 
 ##     data = d)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -3.3923  -0.6723  -0.3810   0.7169   1.9694  
-## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(&gt;|z|)    
 ## (Intercept) -11.19745    2.30896  -4.850 1.24e-06 ***
@@ -354,7 +343,7 @@ beta_e = coef(m1)
 <pre><code>##           [,1]
 ## [1,] 0.9219606</code></pre>
 <p>Para calcular el intervalo de confianza:</p>
-<pre class="r"><code>source(&quot;logit_funciones.R&quot;)
+<pre class="r"><code>source(&quot;funciones/logit_funciones.R&quot;)
 H = logit_hess(coef(m1),model.matrix(m1))
 xp = matrix(xp, ncol = 1)
 (se = sqrt(- t(xp) %*% solve(H) %*% xp ))</code></pre>

@@ -1,13 +1,13 @@
 ---
 title: "Aplicaciones del modelo de regresión logística: cálculo de predicciones"
 output: 
-  pdf_document:
-    number_sections: true
-    toc: true
   html_document:
     number_sections: true
     toc: true
     toc_float: true
+  pdf_document:
+    number_sections: true
+    toc: true
 ---
 
 # Predicción de $\pi_i$
@@ -126,7 +126,7 @@ beta_e = coef(m1)
 Para calcular el intervalo de confianza:
 
 ```{r}
-source("logit_funciones.R")
+source("funciones/logit_funciones.R")
 H = logit_hess(coef(m1),model.matrix(m1))
 xp = matrix(xp, ncol = 1)
 (se = sqrt(- t(xp) %*% solve(H) %*% xp ))

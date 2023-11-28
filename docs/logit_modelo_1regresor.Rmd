@@ -557,9 +557,64 @@ mle$par
 
 ## Estimacion con R
 
+### Con variable respuesta 0-1
+
 ```{r}
 m2 = glm(InMichelin ~ Food, data = d, family = binomial)
 summary(m2)
 ```
 
 Internamente la función glm() utiliza el algoritmo de Newton.
+
+### Con variable respuesta como factor
+
+Pero la manera natural de trabajar con variables cualitativas en R es definirlas como factores.
+
+```{r}
+d$InMichelin = factor(d$InMichelin, labels = c("No","Yes"))
+str(d)
+```
+
+```{r}
+m3 = glm(InMichelin ~ Food, data = d, family = binomial)
+summary(m3)
+```
+
+El modelo que estamos estimando es:
+
+$$
+P (Y_i = Yes) = \frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)}
+$$
+
+Podemos cambiar el nivel de referencia de la variable respuesta:
+
+```{r}
+d$InMichelin = relevel(d$InMichelin, ref = "Yes")
+m4 = glm(InMichelin ~ Food, data = d, family = binomial)
+summary(m4)
+```
+
+El modelo que estamos estimando ahora es:
+
+$$
+P (Y_i = No) = \frac{exp(\beta_0^* + \beta_1^* x_i)}{1 + exp(\beta_0^* + \beta_1^* x_i)}
+$$
+
+De la salida de R hemos visto que en este caso $\beta_0 = - \beta_0^*$ y $\beta_1 = - \beta_1^*$. Veamos que esto siempre es así. Se tiene que
+
+$$
+P(Y_i = Yes) = 1 - P(Y_i = No)
+$$
+
+$$
+\frac{exp(\beta_0 + \beta_1 x_i)}{1 + exp(\beta_0 + \beta_1 x_i)} = 1 - \frac{exp(\beta_0^* + \beta_1^* x_i)}{1 + exp(\beta_0^* + \beta_1^* x_i)}
+$$
+
+Operando se tiene que:
+
+$$
+exp(\beta_0 + \beta_0^* + (\beta_1 + \beta_1^*) x_i) = 1
+$$
+
+Por tanto, $\beta_0 + \beta_0^* = 0$ y $\beta_1 + \beta_1^* = 0$.
+
