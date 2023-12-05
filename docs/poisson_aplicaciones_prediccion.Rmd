@@ -15,7 +15,7 @@ output:
 Sea el modelo de regresión de Poisson
 
 $$
-P(Y_i = y_i) = \frac{e^{-\lambda_i} \lambda_i^{y_i}}{y_i!}, \quad y_i = 0,1,2,3,\ldots
+P(Y_i = y_i) = \frac{e^{-\lambda_i} \lambda_i^{y_i}}{y_i!}, \quad y_i = 0,1,2,3,\ldots, \quad i = 1,2,\cdots,n
 $$
 
 donde:
@@ -51,7 +51,11 @@ $$
 \end{bmatrix}
 $$
 
-El valor $\hat \lambda_p$ es la predicción del valor medio de Y en $x_p$.
+El valor $\hat \lambda_p$ es la predicción del valor medio de Y en $x_p$, ya que por las propiedades de la distribución de Poisson
+
+$$
+E[Y | Y \sim Poisson(\lambda_p)] = \lambda_p
+$$
 
 # Intervalo de confianza para $\lambda_p$
 
