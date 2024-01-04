@@ -179,13 +179,13 @@ P(\hat y_p = y) = \frac{e^{-\hat \lambda_p} \hat \lambda_p^{y}}{y!}, \quad y = 0
 $$
 
 ```{r}
-ppois(2,lambda_p)
+dpois(2,lambda_p)
 ```
 
 Con intervalo de confianza
 
 ```{r}
-c(ppois(2,exp(Up)), ppois(2,exp(Lp)))
+c(dpois(2,exp(Lp)), dpois(2,exp(Up)))
 ```
 
 # Intervalo de confianza para $\lambda_p$ y para las predicciones utilizando bootstrap

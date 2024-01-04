@@ -107,8 +107,8 @@ pre code {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -116,16 +116,9 @@ pre code {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -250,8 +243,7 @@ div.tocify {
 
 <div id="lectura-de-datos" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Lectura de datos</h1>
-<pre class="r"><code>library(tree)
-d = read.csv(&#39;datos/kidiq.csv&#39;)
+<pre class="r"><code>d = read.csv(&#39;datos/kidiq.csv&#39;)
 d$mom_hs = factor(d$mom_hs, labels = c(&quot;no&quot;, &quot;si&quot;))
 d$mom_work = factor(d$mom_work, labels = c(&quot;notrabaja&quot;, &quot;trabaja23&quot;, &quot;trabaja1_parcial&quot;, &quot;trabaja1_completo&quot;))</code></pre>
 </div>
@@ -332,8 +324,19 @@ yp_test_rf3 = predict(rf3, newdata = datos_test)
 <pre><code>## [1] 376.1012</code></pre>
 </div>
 </div>
-<div id="importancia-de-variables" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> Importancia de variables</h1>
+<div id="prediccion-de-un-valor-concreto" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Prediccion de un valor concreto</h1>
+<pre class="r"><code># el paquete randomForest requiere que definamos las varibles cualitativas como factores
+xp = data.frame(mom_iq = 95, mom_age = 30, 
+                mom_hs = factor(&quot;si&quot;, levels = c(&quot;no&quot;,&quot;si&quot;)), 
+                mom_work = factor(&quot;notrabaja&quot;, levels = c(&quot;notrabaja&quot;, &quot;trabaja23&quot;, &quot;trabaja1_parcial&quot;, &quot;trabaja1_completo&quot;)) )
+# la prediccion se calcula como el promedio de las predicciones de cada uno de los 500 arboles
+predict(rf1, newdata = xp)</code></pre>
+<pre><code>##        1 
+## 75.74037</code></pre>
+</div>
+<div id="importancia-de-variables" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Importancia de variables</h1>
 <pre class="r"><code>rf4 = randomForest(kid_score ~ ., data = datos_train, mtry = 4, ntree = 500, importance = T)</code></pre>
 <pre class="r"><code>importance(rf4)</code></pre>
 <pre><code>##            %IncMSE IncNodePurity

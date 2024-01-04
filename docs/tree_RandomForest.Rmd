@@ -13,7 +13,6 @@ output:
 # Lectura de datos
 
 ```{r cars}
-library(tree)
 d = read.csv('datos/kidiq.csv')
 d$mom_hs = factor(d$mom_hs, labels = c("no", "si"))
 d$mom_work = factor(d$mom_work, labels = c("notrabaja", "trabaja23", "trabaja1_parcial", "trabaja1_completo"))
@@ -119,6 +118,16 @@ yp_test_rf3 = predict(rf3, newdata = datos_test)
 (MSE_test_rf3 = mean((y_test - yp_test_rf3)^2))
 ```
 
+# Prediccion de un valor concreto
+
+```{r}
+# el paquete randomForest requiere que definamos las varibles cualitativas como factores
+xp = data.frame(mom_iq = 95, mom_age = 30, 
+                mom_hs = factor("si", levels = c("no","si")), 
+                mom_work = factor("notrabaja", levels = c("notrabaja", "trabaja23", "trabaja1_parcial", "trabaja1_completo")) )
+# la prediccion se calcula como el promedio de las predicciones de cada uno de los 500 arboles
+predict(rf1, newdata = xp)
+```
 
 # Importancia de variables
 
